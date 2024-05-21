@@ -1,12 +1,18 @@
 import logging
 import requests
-from config import config, SYSTEM_PROMPT
-from creds import get_creds
+from config import config, SYSTEM_PROMPT, LOGS_PATH
 
-logging.basicConfig(filename='logs.txt', level=logging.INFO,
-                    format="%(asctime)s FILE: %(filename)s IN: %(funcName)s MESSAGE: %(message)s", filemode="w")
+# from creds import get_creds todo Давид, если не тяжело, то сделай пж их
 
-iam_token, folder_id = get_creds()
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    filename=LOGS_PATH,
+    filemode="a"
+)
+
+iam_token = "t1.9euelZqJm8..."
+folder_id = "b1gpk..."
 
 
 def count_gpt_tokens(messages):

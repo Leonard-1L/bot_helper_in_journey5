@@ -2,39 +2,54 @@ import telebot
 from telebot.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 import logging
 from config import LOGS_PATH, BOT_TOKEN
-from database import create_database
+from database import create_database, add_new_user, update_tokens
+from gpt import ask_gpt, count_gpt_tokens
 
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     filename=LOGS_PATH,
-    filemode="w"
+    filemode="a"
 )
 
 bot = telebot.TeleBot(token=BOT_TOKEN)
-create_database()#на всякий случай
+create_database()  # на всякий случай
+
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     markup = InlineKeyboardMarkup()
-    itembtn1 = InlineKeyboardButton(text="Нажми меня!", callback_data='data1')
-    itembtn2 = InlineKeyboardButton(text="Нет, нажми меня!", callback_data='data2')
-    markup.add(itembtn1, itembtn2)
-    bot.send_message(message.chat.id, "Привет Нажми на кнопку ниже.", reply_markup=markup)
+    itembtn1 = InlineKeyboardButton(text="Начинаем!", callback_data='russ')
+    markup.add(itembtn1)
+    bot.send_message(message.chat.id, f"Привет, {message.from_user.username}! Начинаем?",
+                     reply_markup=markup)
 
 
 @bot.callback_query_handler(func=lambda call: True)
 def query_callback(call):
-    if call.data == 'data1':
-        bot.answer_callback_query(callback_query_id=call.id, text="Вы нажали на кнопку!")
+    if call.data:
+        msg = bot.send_message(call.message.chat.id,
+                               text="Отлично! Я бот, который помогает в путешествиях. Смогу подобрать куда сходить, рассказать про"
+                                    "выбранную тобой достопримечательность. Напиши город в котором ты находишься:")
+        bot.register_next_step_handler(msg, user_add)
+
+
+def user_add(message: Message):
+    add_new_user(message.from_user.id)
+    gpt_bool, gpt_text, gpt_tokens = ask_gpt(f"Расскажи про город {message.text}")
+    if gpt_bool[0]:
+        update_tokens(user_id=message.from_user.id, add_tokens=gpt_tokens)
+        logging.info(
+            f"{message.from_user.username} c id {message.from_user.id} получил ответ {gpt_text}. Токены: {gpt_tokens}")
     else:
-        bot.answer_callback_query(callback_query_id=call.id, text="БЕБЕБЕ")
+        logging.error(f'{message.from_user.username} c id {message.from_user.id} не смог получить ответ от нейросети')
+    bot.send_message(message.from_user.id, gpt_text)
 
 
 @bot.message_handler(commands=['help'])
 def send_help(message: Message):
     bot.send_message(message.from_user.id, "текст помощи")
-    logging.info(f"{message.from_user.id} запросил помощь.")
+    logging.info(f"{message.from_user.username} c id {message.from_user.id} запросил помощь.")
 
 
 @bot.message_handler(func=lambda: True)

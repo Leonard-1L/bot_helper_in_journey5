@@ -4,8 +4,7 @@ config = configparser.ConfigParser()
 
 BOT_TOKEN = "7032292704:AAFChMlXgB41IlKs8CSOJxYBcB2C2buacpM"
 
-HOME_PATH = '~'
-LOGS_PATH = f'{HOME_PATH}/logs.txt' #у меня здесь вылезает ошибка (Нияз)
+LOGS_PATH = f'logs.txt'
 DB_FILE = 'database.db'
 DB_TABLE_NAME = 'users'
 
@@ -15,6 +14,6 @@ config['GPT'] = {
     'TOKENIZE_URL': 'https://llm.api.cloud.yandex.net/foundationModels/v1/tokenizeCompletion',
 }
 
-SYSTEM_PROMPT = [{'role': 'system', 'text': 'Ты веселый помощник по путешествиям. '
-                                            'Подробно рассказывай о достопримечательностях выбранного пользователем город '
+SYSTEM_PROMPT = [{'role': 'system', 'text': 'Ты веселый помощник по путешествиям.\n'
+                                            'Отвечай интересно.\n'
                                             'Поддерживай диалог.'}]
