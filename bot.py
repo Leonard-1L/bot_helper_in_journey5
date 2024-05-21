@@ -2,6 +2,7 @@ import telebot
 from telebot.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 import logging
 from config import LOGS_PATH, BOT_TOKEN
+from database import create_database
 
 logging.basicConfig(
     level=logging.INFO,
@@ -11,7 +12,7 @@ logging.basicConfig(
 )
 
 bot = telebot.TeleBot(token=BOT_TOKEN)
-
+create_database()#на всякий случай
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
