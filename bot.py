@@ -46,6 +46,7 @@ def user_add(message: Message):
         logging.error(f'{message.from_user.username} c id {message.from_user.id} не смог получить ответ от нейросети')
     bot.send_message(message.from_user.id, gpt_text)
 
+    # TODO: на этих кнопках падает бот!
     markup2 = InlineKeyboardMarkup()
     itembtn1 = InlineKeyboardButton(text="Поесть", callback_data='пользователь хочет поесть')
     itembtn2 = InlineKeyboardButton(text="Переночевать", callback_data='пользователь хочет переночевать')

@@ -9,7 +9,9 @@ logging.basicConfig(
     filemode="a"
 )
 
-iam_token, folder_id = 1, 2
+# iam_token, folder_id =
+iam_token = ''
+folder_id = ''
 
 
 def count_gpt_tokens(messages):
@@ -44,7 +46,7 @@ def ask_gpt(messages):
                 "temperature": 0.7,
                 "maxTokens": int(config['LIMITS']['MAX_ANSWER_GPT_TOKENS'])
             },
-            "messages": SYSTEM_PROMPT + messages
+            "messages": [SYSTEM_PROMPT, {'role': 'user', 'text': messages}]
         }
         
         response = requests.post(url, headers=headers, json=data)
@@ -60,3 +62,4 @@ def ask_gpt(messages):
     except Exception as e:
         logging.error(e)
         return False, "Ошибка при обращении к GPT", None
+
