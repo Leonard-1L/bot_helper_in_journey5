@@ -1,7 +1,7 @@
 import sqlite3
 import logging
 
-from config import DB_FILE, DB_TABLE_NAME, LOGS_PATH
+from config import DB_FILE, DB_TABLE_NAME, LOGS_PATH, MAX_USERS
 
 logging.basicConfig(
     level=logging.INFO,
@@ -19,7 +19,8 @@ def create_database():  # функция, создающая базу данны
                 CREATE TABLE IF NOT EXISTS {DB_TABLE_NAME} (
                 id INTEGER PRIMARY KEY,
                 user_id INTEGER,
-                total_tokens INTEGER)
+                total_tokens INTEGER,
+                current_city TEXT)
             ''')
     except Exception as e:
         logging.error(f'Ошибка: {e}')
@@ -58,13 +59,13 @@ def execute_selection_query(sql_query, data=None,
 
 
 def add_new_user(user_id):  # добавляет нового пользователя, приниает в качестве аргумента id пользователя
-    sql_query = f'INSERT INTO {DB_TABLE_NAME} (user_id, total_tokens) VALUES (?, ?)'
-    execute_query(sql_query, (user_id, 0))
+    sql_query = f'INSERT INTO {DB_TABLE_NAME} (user_id, total_tokens, current_city) VALUES (?, ?, ?)'
+    execute_query(sql_query, (user_id, 0, None))
 
 
 def update_tokens(user_id,
                   add_tokens):  # обновляет кол.-во потраченных токенов, add_tokens - кол.-во токенов, которое надо добавить к существующему
-    sql_query = f'UPDATE users SET total_tokens = total_tokens + {add_tokens} WHERE user_id={user_id};'  # todo использовать после каждого подсчёта токенов в новом запросе
+    sql_query = f'UPDATE {DB_TABLE_NAME} SET total_tokens = total_tokens + {add_tokens} WHERE user_id={user_id};'  # todo использовать после каждого подсчёта токенов в новом запросе
     execute_query(sql_query)
 
 
@@ -82,7 +83,37 @@ def get_tokens(
     else:
         return 0
 
+
+def change_city(user_id, #меняет текущий город
+                new_city): #лучше хранить город так, а не в переменной, чтобы не было сбоев
+    sql_query = f'UPDATE {DB_TABLE_NAME} SET current_city = "{new_city}" WHERE user_id={user_id};'
+    execute_query(sql_query)
+
+
+def get_city(user_id):
+    sql_query = f'SELECT current_city FROM {DB_TABLE_NAME} WHERE user_id={user_id}'
+    data = execute_selection_query(sql_query)
+    return data[0][0]
+
+
+def is_limit_users(): #возвращает True или False
+    result = execute_selection_query(f'SELECT DISTINCT user_id FROM {DB_TABLE_NAME}')
+    count = 0
+    for i in result:
+        count += 1
+    return count >= MAX_USERS
+
+
+def is_user(user_id): #возвращает 1, если пользователь существует или 0, если нет
+    sql = f'SELECT EXISTS(SELECT * FROM {DB_TABLE_NAME} WHERE user_id={user_id})'
+    return execute_selection_query(sql)[0][0]
+
+
 # create_database()
-# add_new_user(1)
+# add_new_user(2)
 # update_tokens(1, 69)
 # print(get_tokens(1))
+# change_city(1, 'Казань')
+# print(get_city(2))
+# print(is_user(1))
+# print(is_limit_users())
