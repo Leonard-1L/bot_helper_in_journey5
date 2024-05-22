@@ -1,0 +1,76 @@
+Index: bot.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import telebot\r\nfrom telebot.types import Message, InlineKeyboardMarkup, InlineKeyboardButton\r\nimport logging\r\nfrom config import LOGS_PATH, BOT_TOKEN\r\n\r\nlogging.basicConfig(\r\n    level=logging.INFO,\r\n    format=\"%(asctime)s - %(name)s - %(levelname)s - %(message)s\",\r\n    filename=LOGS_PATH,\r\n    filemode=\"w\"\r\n)\r\n\r\nbot = telebot.TeleBot(token=BOT_TOKEN)\r\n\r\n\r\n@bot.message_handler(commands=['start'])\r\ndef send_welcome(message):\r\n    markup = InlineKeyboardMarkup()\r\n    itembtn1 = InlineKeyboardButton(text=\"Нажми меня!\", callback_data='data1')\r\n    itembtn2 = InlineKeyboardButton(text=\"Нет, нажми меня!\", callback_data='data2')\r\n    markup.add(itembtn1, itembtn2)\r\n    bot.send_message(message.chat.id, \"Привет Нажми на кнопку ниже.\", reply_markup=markup)\r\n\r\n\r\n@bot.callback_query_handler(func=lambda call: True)\r\ndef query_callback(call):\r\n    if call.data == 'data1':\r\n        bot.answer_callback_query(callback_query_id=call.id, text=\"Вы нажали на кнопку!\")\r\n    else:\r\n        bot.answer_callback_query(callback_query_id=call.id, text=\"БЕБЕБЕ\")\r\n\r\n\r\n@bot.message_handler(commands=['help'])\r\ndef send_help(message: Message):\r\n    bot.send_message(message.from_user.id, \"текст помощи\")\r\n    logging.info(f\"{message.from_user.id} запросил помощь.\")\r\n\r\n\r\n@bot.message_handler(func=lambda: True)\r\ndef others_message(message):\r\n    bot.send_message(message.from_user.id, \"Отправь мне голосовое или текстовое сообщение, и я тебе отвечу\")\r\n\r\n\r\nif __name__ == \"__main__\":\r\n    logging.info(\"Бот запущен\")\r\n    bot.polling(none_stop=True)\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/bot.py b/bot.py
+--- a/bot.py	(revision c361604ce246fb6d64d36983607b2eb8df05eb15)
++++ b/bot.py	(date 1716317598164)
+@@ -16,10 +16,13 @@
+ @bot.message_handler(commands=['start'])
+ def send_welcome(message):
+     markup = InlineKeyboardMarkup()
+-    itembtn1 = InlineKeyboardButton(text="Нажми меня!", callback_data='data1')
+-    itembtn2 = InlineKeyboardButton(text="Нет, нажми меня!", callback_data='data2')
++    itembtn1 = InlineKeyboardButton(text="Русский", callback_data='russ')
++    itembtn2 = InlineKeyboardButton(text="English", callback_data='engl')
+     markup.add(itembtn1, itembtn2)
+-    bot.send_message(message.chat.id, "Привет Нажми на кнопку ниже.", reply_markup=markup)
++    bot.send_message(message.chat.id, f"Привет, {message.from_user.username}! Выбери язык:\n"
++                                      f"\n"
++                                      f"Hello, {message.from_user.username}! Choice language:",
++                     reply_markup=markup)
+ 
+ 
+ @bot.callback_query_handler(func=lambda call: True)
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"0773c94a-c6fb-4ac0-9d19-59b1d7b5935b\" name=\"Changes\" comment=\"First commit!!!\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/bot_helper_in_journey.iml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/bot_helper_in_journey.iml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/modules.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/modules.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/vcs.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/vcs.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/bot.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/bot.py\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Python Script\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProblemsViewState\">\r\n    <option name=\"selectedTabId\" value=\"DEPENDENCY_CHECKER_PROBLEMS_TAB\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 7\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2gjqScHtLSzgtbXOdBt9nhpYqAZ\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"git-widget-placeholder\": \"master\",\r\n    \"settings.editor.selected.configurable\": \"org.jetbrains.plugins.github.ui.GithubSettingsConfigurable\"\r\n  }\r\n}]]></component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-python-sdk-5a2391486177-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.13763.11\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"0773c94a-c6fb-4ac0-9d19-59b1d7b5935b\" name=\"Changes\" comment=\"\" />\r\n      <created>1716221335028</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1716221335028</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"First commit!!!\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1716227170528</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1716227170528</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"2\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"First commit!!!\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"First commit!!!\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision c361604ce246fb6d64d36983607b2eb8df05eb15)
++++ b/.idea/workspace.xml	(date 1716317328973)
+@@ -4,10 +4,7 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="0773c94a-c6fb-4ac0-9d19-59b1d7b5935b" name="Changes" comment="First commit!!!">
+-      <change beforePath="$PROJECT_DIR$/.idea/bot_helper_in_journey.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/bot_helper_in_journey.iml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
++    <list default="true" id="0773c94a-c6fb-4ac0-9d19-59b1d7b5935b" name="Changes" comment="cheking commit">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot.py" afterDir="false" />
+     </list>
+@@ -73,7 +70,15 @@
+       <option name="project" value="LOCAL" />
+       <updated>1716227170528</updated>
+     </task>
+-    <option name="localTasksCounter" value="2" />
++    <task id="LOCAL-00002" summary="cheking commit">
++      <option name="closed" value="true" />
++      <created>1716315522041</created>
++      <option name="number" value="00002" />
++      <option name="presentableId" value="LOCAL-00002" />
++      <option name="project" value="LOCAL" />
++      <updated>1716315522041</updated>
++    </task>
++    <option name="localTasksCounter" value="3" />
+     <servers />
+   </component>
+   <component name="Vcs.Log.Tabs.Properties">
+@@ -89,6 +94,7 @@
+   </component>
+   <component name="VcsManagerConfiguration">
+     <MESSAGE value="First commit!!!" />
+-    <option name="LAST_COMMIT_MESSAGE" value="First commit!!!" />
++    <MESSAGE value="cheking commit" />
++    <option name="LAST_COMMIT_MESSAGE" value="cheking commit" />
+   </component>
+ </project>
+\ No newline at end of file

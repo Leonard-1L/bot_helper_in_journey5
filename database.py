@@ -27,7 +27,8 @@ def create_database():  # функция, создающая базу данны
         return None
 
 
-def execute_query(sql_query, data=None, db_path=DB_FILE):  # функция, которая выполняет sql-запрос и ничего не возвращает
+def execute_query(sql_query, data=None,
+                  db_path=DB_FILE):  # функция, которая выполняет sql-запрос и ничего не возвращает
     try:
         with sqlite3.connect(db_path) as connection:
             cursor = connection.cursor()
@@ -84,8 +85,8 @@ def get_tokens(
         return 0
 
 
-def change_city(user_id, #меняет текущий город
-                new_city): #лучше хранить город так, а не в переменной, чтобы не было сбоев
+def change_city(user_id,  # меняет текущий город
+                new_city):  # лучше хранить город так, а не в переменной, чтобы не было сбоев
     sql_query = f'UPDATE {DB_TABLE_NAME} SET current_city = "{new_city}" WHERE user_id={user_id};'
     execute_query(sql_query)
 
@@ -96,7 +97,7 @@ def get_city(user_id):
     return data[0][0]
 
 
-def is_limit_users(): #возвращает True или False
+def is_limit_users():  # возвращает True или False
     result = execute_selection_query(f'SELECT DISTINCT user_id FROM {DB_TABLE_NAME}')
     count = 0
     for i in result:
@@ -104,10 +105,9 @@ def is_limit_users(): #возвращает True или False
     return count >= MAX_USERS
 
 
-def is_user(user_id): #возвращает 1, если пользователь существует или 0, если нет
+def is_user(user_id):  # возвращает 1, если пользователь существует или 0, если нет
     sql = f'SELECT EXISTS(SELECT * FROM {DB_TABLE_NAME} WHERE user_id={user_id})'
     return execute_selection_query(sql)[0][0]
-
 
 # create_database()
 # add_new_user(2)

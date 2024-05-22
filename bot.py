@@ -13,7 +13,7 @@ logging.basicConfig(
 )
 
 bot = telebot.TeleBot(token=BOT_TOKEN)
-create_database()  # на всякий случай
+create_database()
 
 
 @bot.message_handler(commands=['start'])
@@ -30,20 +30,31 @@ def query_callback(call):
     if call.data:
         msg = bot.send_message(call.message.chat.id,
                                text="Отлично! Я бот, который помогает в путешествиях. Смогу подобрать куда сходить, рассказать про"
-                                    "выбранную тобой достопримечательность. Напиши город в котором ты находишься:")
+                                    "выбранную тобой достопримечательность. \n"
+                                    "А теперь напиши город в котором ты сейчас находишься:")
         bot.register_next_step_handler(msg, user_add)
 
 
 def user_add(message: Message):
     add_new_user(message.from_user.id)
-    gpt_bool, gpt_text, gpt_tokens = ask_gpt(f"Расскажи про город {message.text}")
-    if gpt_bool[0]:
+    gpt_bool, gpt_text, gpt_tokens = ask_gpt(f"Расскажи про город {message.text}. Его историю, экономику и население.")
+    if gpt_bool:
         update_tokens(user_id=message.from_user.id, add_tokens=gpt_tokens)
         logging.info(
             f"{message.from_user.username} c id {message.from_user.id} получил ответ {gpt_text}. Токены: {gpt_tokens}")
     else:
         logging.error(f'{message.from_user.username} c id {message.from_user.id} не смог получить ответ от нейросети')
     bot.send_message(message.from_user.id, gpt_text)
+
+    markup2 = InlineKeyboardMarkup()
+    itembtn1 = InlineKeyboardButton(text="Поесть", callback_data='пользователь хочет поесть')
+    itembtn2 = InlineKeyboardButton(text="Переночевать", callback_data='пользователь хочет переночевать')
+    itembtn3 = InlineKeyboardButton(text="Посмотреть достопримечательности",
+                                    callback_data='пользователь хочет посмотреть достопримечательности')
+    itembtn4 = InlineKeyboardButton(text="Повеселиться", callback_data='пользователь хочет повеселиться')
+    markup2.add(itembtn1, itembtn4, itembtn3, itembtn2)
+    bot.send_message(message.chat.id, f"Выбери, что хочешь сделать в городе {message.text}",
+                     reply_markup=markup2)
 
 
 @bot.message_handler(commands=['help'])
@@ -52,7 +63,7 @@ def send_help(message: Message):
     logging.info(f"{message.from_user.username} c id {message.from_user.id} запросил помощь.")
 
 
-@bot.message_handler(func=lambda: True)
+@bot.message_handler()
 def others_message(message):
     bot.send_message(message.from_user.id, "Отправь мне голосовое или текстовое сообщение, и я тебе отвечу")
 

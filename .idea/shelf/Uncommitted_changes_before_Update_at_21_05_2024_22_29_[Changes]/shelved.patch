@@ -1,0 +1,228 @@
+Index: database.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import sqlite3\r\nimport logging\r\n\r\nfrom config import DB_FILE, DB_TABLE_NAME, LOGS_PATH\r\n\r\nlogging.basicConfig(\r\n    level=logging.INFO,\r\n    format=\"%(asctime)s - %(name)s - %(levelname)s - %(message)s\",\r\n    filename=LOGS_PATH,\r\n    filemode=\"a\" #лучше использовать filemode a, чтобы при каждом запуске программы logs.txt не стирался и сохранялись старые логи\r\n)\r\n\r\n\r\ndef create_database(): #функция, создающая базу данных\r\n    try:\r\n        with sqlite3.connect(DB_FILE) as connection:\r\n            cursor = connection.cursor()\r\n            cursor.execute(f'''\r\n                CREATE TABLE IF NOT EXISTS {DB_TABLE_NAME} (\r\n                id INTEGER PRIMARY KEY,\r\n                user_id INTEGER,\r\n                total_tokens INTEGER)\r\n            ''')\r\n    except Exception as e:\r\n        logging.error(f'Ошибка: {e}')\r\n        return None\r\n\r\n\r\ndef execute_query(sql_query, data=None, db_path=DB_FILE): #функция,которая выполняет sql-запрос и ничего не возвращает\r\n    try:\r\n        with sqlite3.connect(db_path) as connection:\r\n            cursor = connection.cursor()\r\n            if data:\r\n                cursor.execute(sql_query, data)\r\n            else:\r\n                cursor.execute(sql_query)\r\n            connection.commit()\r\n    except Exception as e:\r\n        logging.error(f'Ошибка: {e}')\r\n        return None\r\n\r\n\r\ndef execute_selection_query(sql_query, data=None, db_path=DB_FILE):#функция,которая выполняет sql-запрос и возвращает данные в формате списка с кортежами - [(...,), (...,), ...]\r\n    try:\r\n        with sqlite3.connect(db_path) as connection:\r\n            cursor = connection.cursor()\r\n            if data:\r\n                cursor.execute(sql_query, data)\r\n            else:\r\n                cursor.execute(sql_query)\r\n            rows = cursor.fetchall()\r\n            connection.commit()\r\n            return rows\r\n    except Exception as e:\r\n        logging.error(f'Ошибка: {e}')\r\n        return None\r\n\r\n\r\ndef add_new_user(user_id):#добавляет нового пользователя, приниает в качестве аргумента id пользователя\r\n    sql_query = f'INSERT INTO {DB_TABLE_NAME} (user_id, total_tokens) VALUES (?, ?)'\r\n    execute_query(sql_query, (user_id, 0))\r\n\r\n\r\ndef update_tokens(user_id, add_tokens):#обновляет кол.-во потраченных токенов, add_tokens - кол.-во токенов, которое надо добавить к существующему\r\n    sql_query = f'UPDATE users SET total_tokens = total_tokens + {add_tokens} WHERE user_id={user_id};' #todo использовать после каждого подсчёта токенов в новом запросе\r\n    execute_query(sql_query)\r\n\r\ndef delete_user(user_id):#удаляет указанного пользователя по id\r\n    sql = f'DELETE FROM {DB_TABLE_NAME} WHERE user_id={user_id};'\r\n    execute_query(sql)\r\n\r\ndef get_tokens(user_id):#возвращает общее кол.-во потраченных токенов todo использовать для проверок на исчерпание лимита токенов\r\n    sql_query = f'SELECT total_tokens FROM {DB_TABLE_NAME} WHERE user_id={user_id}'\r\n    data = execute_selection_query(sql_query)[0]\r\n    if data != ():\r\n        return data[0]\r\n    else:\r\n        return 0\r\n\r\n#create_database()\r\n#add_new_user(1)\r\n#update_tokens(1, 69)\r\n#print(get_tokens(1))\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/database.py b/database.py
+--- a/database.py	(revision 3f5c79b8c1fe81c560bc92ae090f062ef47b790c)
++++ b/database.py	(date 1716317937069)
+@@ -7,11 +7,12 @@
+     level=logging.INFO,
+     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+     filename=LOGS_PATH,
+-    filemode="a" #лучше использовать filemode a, чтобы при каждом запуске программы logs.txt не стирался и сохранялись старые логи
++    filemode="a"
++    # лучше использовать filemode a, чтобы при каждом запуске программы logs.txt не стирался и сохранялись старые логи
+ )
+ 
+ 
+-def create_database(): #функция, создающая базу данных
++def create_database():  # функция, создающая базу данных
+     try:
+         with sqlite3.connect(DB_FILE) as connection:
+             cursor = connection.cursor()
+@@ -26,7 +27,7 @@
+         return None
+ 
+ 
+-def execute_query(sql_query, data=None, db_path=DB_FILE): #функция,которая выполняет sql-запрос и ничего не возвращает
++def execute_query(sql_query, data=None, db_path=DB_FILE):  # функция, которая выполняет sql-запрос и ничего не возвращает
+     try:
+         with sqlite3.connect(db_path) as connection:
+             cursor = connection.cursor()
+@@ -40,7 +41,8 @@
+         return None
+ 
+ 
+-def execute_selection_query(sql_query, data=None, db_path=DB_FILE):#функция,которая выполняет sql-запрос и возвращает данные в формате списка с кортежами - [(...,), (...,), ...]
++def execute_selection_query(sql_query, data=None,
++                            db_path=DB_FILE):  # функция, которая выполняет sql-запрос и возвращает данные в формате списка с кортежами - [(...,), (...,), ...]
+     try:
+         with sqlite3.connect(db_path) as connection:
+             cursor = connection.cursor()
+@@ -56,20 +58,24 @@
+         return None
+ 
+ 
+-def add_new_user(user_id):#добавляет нового пользователя, приниает в качестве аргумента id пользователя
++def add_new_user(user_id):  # добавляет нового пользователя, приниает в качестве аргумента id пользователя
+     sql_query = f'INSERT INTO {DB_TABLE_NAME} (user_id, total_tokens) VALUES (?, ?)'
+     execute_query(sql_query, (user_id, 0))
+ 
+ 
+-def update_tokens(user_id, add_tokens):#обновляет кол.-во потраченных токенов, add_tokens - кол.-во токенов, которое надо добавить к существующему
+-    sql_query = f'UPDATE users SET total_tokens = total_tokens + {add_tokens} WHERE user_id={user_id};' #todo использовать после каждого подсчёта токенов в новом запросе
++def update_tokens(user_id,
++                  add_tokens):  # обновляет кол.-во потраченных токенов, add_tokens - кол.-во токенов, которое надо добавить к существующему
++    sql_query = f'UPDATE users SET total_tokens = total_tokens + {add_tokens} WHERE user_id={user_id};'  # todo использовать после каждого подсчёта токенов в новом запросе
+     execute_query(sql_query)
+ 
+-def delete_user(user_id):#удаляет указанного пользователя по id
++
++def delete_user(user_id):  # удаляет указанного пользователя по id
+     sql = f'DELETE FROM {DB_TABLE_NAME} WHERE user_id={user_id};'
+     execute_query(sql)
+ 
+-def get_tokens(user_id):#возвращает общее кол.-во потраченных токенов todo использовать для проверок на исчерпание лимита токенов
++
++def get_tokens(
++        user_id):  # возвращает общее кол.-во потраченных токенов todo использовать для проверок на исчерпание лимита токенов
+     sql_query = f'SELECT total_tokens FROM {DB_TABLE_NAME} WHERE user_id={user_id}'
+     data = execute_selection_query(sql_query)[0]
+     if data != ():
+@@ -77,7 +83,7 @@
+     else:
+         return 0
+ 
+-#create_database()
+-#add_new_user(1)
+-#update_tokens(1, 69)
+-#print(get_tokens(1))
++# create_database()
++# add_new_user(1)
++# update_tokens(1, 69)
++# print(get_tokens(1))
+Index: bot.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import telebot\r\nfrom telebot.types import Message, InlineKeyboardMarkup, InlineKeyboardButton\r\nimport logging\r\nfrom config import LOGS_PATH, BOT_TOKEN\r\nfrom database import create_database\r\n\r\nlogging.basicConfig(\r\n    level=logging.INFO,\r\n    format=\"%(asctime)s - %(name)s - %(levelname)s - %(message)s\",\r\n    filename=LOGS_PATH,\r\n    filemode=\"w\"\r\n)\r\n\r\nbot = telebot.TeleBot(token=BOT_TOKEN)\r\ncreate_database()#на всякий случай\r\n\r\n@bot.message_handler(commands=['start'])\r\ndef send_welcome(message):\r\n    markup = InlineKeyboardMarkup()\r\n    itembtn1 = InlineKeyboardButton(text=\"Нажми меня!\", callback_data='data1')\r\n    itembtn2 = InlineKeyboardButton(text=\"Нет, нажми меня!\", callback_data='data2')\r\n    markup.add(itembtn1, itembtn2)\r\n    bot.send_message(message.chat.id, \"Привет Нажми на кнопку ниже.\", reply_markup=markup)\r\n\r\n\r\n@bot.callback_query_handler(func=lambda call: True)\r\ndef query_callback(call):\r\n    if call.data == 'data1':\r\n        bot.answer_callback_query(callback_query_id=call.id, text=\"Вы нажали на кнопку!\")\r\n    else:\r\n        bot.answer_callback_query(callback_query_id=call.id, text=\"БЕБЕБЕ\")\r\n\r\n\r\n@bot.message_handler(commands=['help'])\r\ndef send_help(message: Message):\r\n    bot.send_message(message.from_user.id, \"текст помощи\")\r\n    logging.info(f\"{message.from_user.id} запросил помощь.\")\r\n\r\n\r\n@bot.message_handler(func=lambda: True)\r\ndef others_message(message):\r\n    bot.send_message(message.from_user.id, \"Отправь мне голосовое или текстовое сообщение, и я тебе отвечу\")\r\n\r\n\r\nif __name__ == \"__main__\":\r\n    logging.info(\"Бот запущен\")\r\n    bot.polling(none_stop=True)\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/bot.py b/bot.py
+--- a/bot.py	(revision 3f5c79b8c1fe81c560bc92ae090f062ef47b790c)
++++ b/bot.py	(date 1716319061941)
+@@ -8,19 +8,23 @@
+     level=logging.INFO,
+     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+     filename=LOGS_PATH,
+-    filemode="w"
++    filemode="a"
+ )
+ 
+ bot = telebot.TeleBot(token=BOT_TOKEN)
+-create_database()#на всякий случай
++create_database()  # на всякий случай
+ 
++
+ @bot.message_handler(commands=['start'])
+ def send_welcome(message):
+     markup = InlineKeyboardMarkup()
+-    itembtn1 = InlineKeyboardButton(text="Нажми меня!", callback_data='data1')
+-    itembtn2 = InlineKeyboardButton(text="Нет, нажми меня!", callback_data='data2')
++    itembtn1 = InlineKeyboardButton(text="Русский", callback_data='russ')
++    itembtn2 = InlineKeyboardButton(text="English", callback_data='engl')
+     markup.add(itembtn1, itembtn2)
+-    bot.send_message(message.chat.id, "Привет Нажми на кнопку ниже.", reply_markup=markup)
++    bot.send_message(message.chat.id, f"Привет, {message.from_user.username}! Выбери язык:\n"
++                                      f"\n"
++                                      f"Hello, {message.from_user.username}! Choice language:",
++                     reply_markup=markup)
+ 
+ 
+ @bot.callback_query_handler(func=lambda call: True)
+Index: config.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>BOT_TOKEN = \"7032292704:AAFChMlXgB41IlKs8CSOJxYBcB2C2buacpM\"\r\n\r\nHOME_PATH = '~'\r\nLOGS_PATH = f'{HOME_PATH}/logs.txt' #у меня здесь вылезает ошибка (Нияз)\r\nDB_FILE = 'database.db'\r\nDB_TABLE_NAME = 'users'
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/config.py b/config.py
+--- a/config.py	(revision 3f5c79b8c1fe81c560bc92ae090f062ef47b790c)
++++ b/config.py	(date 1716319168613)
+@@ -1,6 +1,5 @@
+ BOT_TOKEN = "7032292704:AAFChMlXgB41IlKs8CSOJxYBcB2C2buacpM"
+ 
+-HOME_PATH = '~'
+-LOGS_PATH = f'{HOME_PATH}/logs.txt' #у меня здесь вылезает ошибка (Нияз)
++LOGS_PATH = f'logs.txt' #у меня здесь вылезает ошибка (Нияз)
+ DB_FILE = 'database.db'
+ DB_TABLE_NAME = 'users'
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"0773c94a-c6fb-4ac0-9d19-59b1d7b5935b\" name=\"Changes\" comment=\"First commit!!!\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/bot_helper_in_journey.iml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/bot_helper_in_journey.iml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/modules.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/modules.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/vcs.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/vcs.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/bot.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/bot.py\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Python Script\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProblemsViewState\">\r\n    <option name=\"selectedTabId\" value=\"DEPENDENCY_CHECKER_PROBLEMS_TAB\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 7\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2gjqScHtLSzgtbXOdBt9nhpYqAZ\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"git-widget-placeholder\": \"master\",\r\n    \"settings.editor.selected.configurable\": \"org.jetbrains.plugins.github.ui.GithubSettingsConfigurable\"\r\n  }\r\n}]]></component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-python-sdk-5a2391486177-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.13763.11\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"0773c94a-c6fb-4ac0-9d19-59b1d7b5935b\" name=\"Changes\" comment=\"\" />\r\n      <created>1716221335028</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1716221335028</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"First commit!!!\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1716227170528</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1716227170528</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"2\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"First commit!!!\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"First commit!!!\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 3f5c79b8c1fe81c560bc92ae090f062ef47b790c)
++++ b/.idea/workspace.xml	(date 1716319768656)
+@@ -4,12 +4,11 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="0773c94a-c6fb-4ac0-9d19-59b1d7b5935b" name="Changes" comment="First commit!!!">
+-      <change beforePath="$PROJECT_DIR$/.idea/bot_helper_in_journey.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/bot_helper_in_journey.iml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
++    <list default="true" id="0773c94a-c6fb-4ac0-9d19-59b1d7b5935b" name="Changes" comment="cheking commit">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/database.py" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -30,7 +29,7 @@
+     <option name="stateVersion" value="1" />
+   </component>
+   <component name="ProblemsViewState">
+-    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
++    <option name="selectedTabId" value="CurrentFile" />
+   </component>
+   <component name="ProjectColorInfo">{
+   &quot;associatedIndex&quot;: 7
+@@ -41,14 +40,14 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "RunOnceActivity.OpenProjectViewOnStart": "true",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "git-widget-placeholder": "master",
+-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
++    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;
+   }
+-}]]></component>
++}</component>
+   <component name="SharedIndexes">
+     <attachedChunks>
+       <set>
+@@ -73,7 +72,15 @@
+       <option name="project" value="LOCAL" />
+       <updated>1716227170528</updated>
+     </task>
+-    <option name="localTasksCounter" value="2" />
++    <task id="LOCAL-00002" summary="cheking commit">
++      <option name="closed" value="true" />
++      <created>1716315522041</created>
++      <option name="number" value="00002" />
++      <option name="presentableId" value="LOCAL-00002" />
++      <option name="project" value="LOCAL" />
++      <updated>1716315522041</updated>
++    </task>
++    <option name="localTasksCounter" value="3" />
+     <servers />
+   </component>
+   <component name="Vcs.Log.Tabs.Properties">
+@@ -89,6 +96,7 @@
+   </component>
+   <component name="VcsManagerConfiguration">
+     <MESSAGE value="First commit!!!" />
+-    <option name="LAST_COMMIT_MESSAGE" value="First commit!!!" />
++    <MESSAGE value="cheking commit" />
++    <option name="LAST_COMMIT_MESSAGE" value="cheking commit" />
+   </component>
+ </project>
+\ No newline at end of file

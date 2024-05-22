@@ -1,0 +1,100 @@
+2024-05-21 23:30:36,760 - root - INFO - Бот запущен
+2024-05-21 23:33:59,598 - root - INFO - Бот запущен
+2024-05-21 23:35:38,340 - root - INFO - Бот запущен
+2024-05-22 22:52:45,309 - root - INFO - Бот запущен
+2024-05-22 22:53:11,206 - root - ERROR - Ошибка: table users has no column named current_city
+2024-05-22 22:55:03,024 - root - INFO - Бот запущен
+2024-05-22 22:55:11,862 - root - ERROR - Ошибка: table users has no column named current_city
+2024-05-22 22:55:26,221 - root - INFO - Бот запущен
+2024-05-22 22:55:33,098 - root - ERROR - Ошибка: table users has no column named current_city
+2024-05-22 22:56:50,024 - root - INFO - Бот запущен
+2024-05-22 22:56:56,327 - root - ERROR - Ошибка: table users has no column named current_city
+2024-05-22 23:06:14,871 - root - INFO - Бот запущен
+2024-05-22 23:06:29,906 - root - INFO - Бот запущен
+2024-05-22 23:06:40,802 - root - ERROR - Ошибка: table users has no column named current_city
+2024-05-22 23:07:54,367 - root - INFO - Бот запущен
+2024-05-22 23:08:00,513 - root - ERROR - Ошибка: table users has no column named current_city
+2024-05-22 23:08:00,514 - root - ERROR - 'LIMITS'
+2024-05-22 23:08:00,514 - root - ERROR - Leoprofi c id 6332228115 не смог получить ответ от нейросети
+2024-05-22 23:08:00,722 - TeleBot - ERROR - Threaded polling exception: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: BUTTON_DATA_INVALID
+2024-05-22 23:08:00,723 - TeleBot - ERROR - Exception traceback:
+Traceback (most recent call last):
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\.venv\Lib\site-packages\telebot\__init__.py", line 1215, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\.venv\Lib\site-packages\telebot\util.py", line 150, in raise_exceptions
+    raise self.exception_info
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\.venv\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\bot.py", line 48, in user_add
+    send_categories(message)
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\bot.py", line 59, in send_categories
+    bot.send_message(message.chat.id, f"Выбери, что хочешь сделать в городе {message.text}",
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\.venv\Lib\site-packages\telebot\__init__.py", line 1751, in send_message
+    apihelper.send_message(
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\.venv\Lib\site-packages\telebot\apihelper.py", line 271, in send_message
+    return _make_request(token, method_url, params=payload, method='post')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\.venv\Lib\site-packages\telebot\apihelper.py", line 168, in _make_request
+    json_result = _check_result(method_name, result)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\.venv\Lib\site-packages\telebot\apihelper.py", line 195, in _check_result
+    raise ApiTelegramException(method_name, result, result_json)
+telebot.apihelper.ApiTelegramException: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: BUTTON_DATA_INVALID
+
+2024-05-22 23:09:35,230 - root - INFO - Бот запущен
+2024-05-22 23:10:36,395 - root - INFO - Бот запущен
+2024-05-22 23:10:48,509 - root - ERROR - Ошибка: table users has no column named current_city
+2024-05-22 23:10:48,510 - root - ERROR - 'LIMITS'
+2024-05-22 23:10:48,510 - root - ERROR - Leoprofi c id 6332228115 не смог получить ответ от нейросети
+2024-05-22 23:10:48,714 - TeleBot - ERROR - Threaded polling exception: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: BUTTON_DATA_INVALID
+2024-05-22 23:10:48,716 - TeleBot - ERROR - Exception traceback:
+Traceback (most recent call last):
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\.venv\Lib\site-packages\telebot\__init__.py", line 1215, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\.venv\Lib\site-packages\telebot\util.py", line 150, in raise_exceptions
+    raise self.exception_info
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\.venv\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\bot.py", line 48, in user_add
+    send_categories(message)
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\bot.py", line 59, in send_categories
+    bot.send_message(message.chat.id, f"Выбери, что хочешь сделать в городе {message.text}",
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\.venv\Lib\site-packages\telebot\__init__.py", line 1751, in send_message
+    apihelper.send_message(
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\.venv\Lib\site-packages\telebot\apihelper.py", line 271, in send_message
+    return _make_request(token, method_url, params=payload, method='post')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\.venv\Lib\site-packages\telebot\apihelper.py", line 168, in _make_request
+    json_result = _check_result(method_name, result)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\.venv\Lib\site-packages\telebot\apihelper.py", line 195, in _check_result
+    raise ApiTelegramException(method_name, result, result_json)
+telebot.apihelper.ApiTelegramException: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: BUTTON_DATA_INVALID
+
+2024-05-22 23:15:07,925 - root - INFO - Бот запущен
+2024-05-22 23:15:12,376 - root - ERROR - Ошибка: table users has no column named current_city
+2024-05-22 23:15:12,376 - root - ERROR - 'LIMITS'
+2024-05-22 23:15:12,376 - root - ERROR - Leoprofi c id 6332228115 не смог получить ответ от нейросети
+2024-05-22 23:15:12,534 - TeleBot - ERROR - Threaded polling exception: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: BUTTON_DATA_INVALID
+2024-05-22 23:15:12,536 - TeleBot - ERROR - Exception traceback:
+Traceback (most recent call last):
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\.venv\Lib\site-packages\telebot\__init__.py", line 1215, in __threaded_polling
+    self.worker_pool.raise_exceptions()
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\.venv\Lib\site-packages\telebot\util.py", line 150, in raise_exceptions
+    raise self.exception_info
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\.venv\Lib\site-packages\telebot\util.py", line 93, in run
+    task(*args, **kwargs)
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\bot.py", line 56, in user_add
+    bot.send_message(message.chat.id, f"Выбери, что хочешь сделать в городе {message.text}",
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\.venv\Lib\site-packages\telebot\__init__.py", line 1751, in send_message
+    apihelper.send_message(
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\.venv\Lib\site-packages\telebot\apihelper.py", line 271, in send_message
+    return _make_request(token, method_url, params=payload, method='post')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\.venv\Lib\site-packages\telebot\apihelper.py", line 168, in _make_request
+    json_result = _check_result(method_name, result)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\.venv\Lib\site-packages\telebot\apihelper.py", line 195, in _check_result
+    raise ApiTelegramException(method_name, result, result_json)
+telebot.apihelper.ApiTelegramException: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: BUTTON_DATA_INVALID
+

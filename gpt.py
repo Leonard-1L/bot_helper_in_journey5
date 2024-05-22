@@ -2,8 +2,6 @@ import logging
 import requests
 from config import config, SYSTEM_PROMPT, LOGS_PATH
 
-# from creds import get_creds todo Давид, если не тяжело, то сделай пж их
-
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -11,8 +9,7 @@ logging.basicConfig(
     filemode="a"
 )
 
-iam_token = "t1.9euelZqJm8..."
-folder_id = "b1gpk..."
+iam_token, folder_id = 1, 2
 
 
 def count_gpt_tokens(messages):
@@ -33,23 +30,23 @@ def count_gpt_tokens(messages):
 
 
 def ask_gpt(messages):
-    url = config['GPT']['URL']
-    headers = {
-        'Authorization': f'Bearer {iam_token}',
-        'Content-Type': 'application/json'
-    }
-
-    data = {
-        'modelUri': f"gpt://{folder_id}/yandexgpt-lite",
-        "completionOptions": {
-            "stream": False,
-            "temperature": 0.7,
-            "maxTokens": int(config['LIMITS']['MAX_ANSWER_GPT_TOKENS'])
-        },
-        "messages": SYSTEM_PROMPT + messages
-    }
-
     try:
+        url = config['GPT']['URL']
+        headers = {
+            'Authorization': f'Bearer {iam_token}',
+            'Content-Type': 'application/json'
+        }
+
+        data = {
+            'modelUri': f"gpt://{folder_id}/yandexgpt-lite",
+            "completionOptions": {
+                "stream": False,
+                "temperature": 0.7,
+                "maxTokens": int(config['LIMITS']['MAX_ANSWER_GPT_TOKENS'])
+            },
+            "messages": SYSTEM_PROMPT + messages
+        }
+        
         response = requests.post(url, headers=headers, json=data)
         print(response.json())
         logging.info('GPT: request sent!')
