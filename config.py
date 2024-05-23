@@ -2,7 +2,7 @@ import configparser
 
 config = configparser.ConfigParser()
 
-BOT_TOKEN = "7032292704:AAFChMlXgB41IlKs8CSOJxYBcB2C2buacpM"  # "6214808173:AAHmqWl1LL-9ytJ7T5MY9mTnfkvRADIOpv0"
+BOT_TOKEN = "6214808173:AAHmqWl1LL-9ytJ7T5MY9mTnfkvRADIOpv0"
 
 LOGS_PATH = f'logs.txt'
 IAM_TOKEN_PATH = f'creds/iam_token.json'  # файл для хранения iam_token

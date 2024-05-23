@@ -10,8 +10,8 @@ logging.basicConfig(
 )
 
 # iam_token, folder_id =
-iam_token = 't1.9euelZqYm5zNnJCTlZGWipmaipidl-3rnpWampPNisrKl5qQysqPj86Uj83l8_cqOUJN-e8lcGgV_t3z92pnP0357yVwaBX-zef1656VmpfKjMuJys3Lx4mLy4qMyZab7_zF656VmpfKjMuJys3Lx4mLy4qMyZabveuelZqWj4-UyZuanJabz86Pns_Pz7XehpzRnJCSj4qLmtGLmdKckJKPioua0pKai56bnoue0oye.8zZ29Asbh1NG8fv7u64gLAgImmre0FtNsrcYsFBLLTBloh9lG_I_3eqxD86TogkWyIDHVvt5n6_CkD5DxwkZCw'
-folder_id = 'b1gnl6btbg8ba5ub4odq'
+iam_token = ''
+folder_id = ''
 
 
 def count_gpt_tokens(messages):
