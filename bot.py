@@ -2,7 +2,7 @@ import telebot
 from telebot.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 import logging
 from config import LOGS_PATH, BOT_TOKEN
-from database import create_database, add_new_user, update_tokens
+from database import create_database, add_new_user, update_tokens, change_city, is_user, is_limit_users
 from gpt import ask_gpt, count_gpt_tokens
 
 logging.basicConfig(
@@ -18,10 +18,13 @@ create_database()
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
+    if is_limit_users(): #проверка на лимит пользователей
+        bot.send_message(message.chat.id, f"К сожалению, у бота слишком много пользователей")
+        return
     markup = InlineKeyboardMarkup()
     itembtn1 = InlineKeyboardButton(text="Начинаем!", callback_data='russ')
     markup.add(itembtn1)
-    bot.send_message(message.chat.id, f"Привет, {message.from_user.username}! Начинаем?",
+    bot.send_message(message.chat.id, f"Привет, {message.from_user.first_name}! Начинаем?",
                      reply_markup=markup)
 
 
@@ -36,7 +39,9 @@ def query_callback(call):
 
 
 def user_add(message: Message):
-    add_new_user(message.from_user.id)
+    if is_user(message.from_user.id) == 0: #бот каждый раз добавлял пользователя заново
+        add_new_user(message.from_user.id, message.from_user.first_name) #так что вот проверка
+    change_city(message.from_user.id, message.text)
     gpt_bool, gpt_text, gpt_tokens = ask_gpt(f"Расскажи про город {message.text}. Его историю, экономику и население.")
     if gpt_bool:
         update_tokens(user_id=message.from_user.id, add_tokens=gpt_tokens)

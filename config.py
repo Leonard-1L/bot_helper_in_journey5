@@ -2,7 +2,7 @@ import configparser
 
 config = configparser.ConfigParser()
 
-BOT_TOKEN = "7032292704:AAFChMlXgB41IlKs8CSOJxYBcB2C2buacpM"
+BOT_TOKEN = '6214808173:AAHmqWl1LL-9ytJ7T5MY9mTnfkvRADIOpv0'#"7032292704:AAFChMlXgB41IlKs8CSOJxYBcB2C2buacpM"
 
 LOGS_PATH = f'logs.txt'
 IAM_TOKEN_PATH = f'creds/iam_token.json'  # файл для хранения iam_token
@@ -12,7 +12,7 @@ BOT_TOKEN_PATH = f'creds/bot_token.txt'  # файл для хранения bot_
 DB_FILE = 'database.db'
 DB_TABLE_NAME = 'users'
 
-MAX_USERS = 5  # лимит на общее количество пользователей
+MAX_USERS = 10  # лимит на общее количество пользователей
 MAX_ANSWER_GPT_TOKENS = 200
 
 config['GPT'] = {

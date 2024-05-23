@@ -18,6 +18,7 @@ def create_database():  # функция, создающая базу данны
             cursor.execute(f'''
                 CREATE TABLE IF NOT EXISTS {DB_TABLE_NAME} (
                 id INTEGER PRIMARY KEY,
+                username TEXT,
                 user_id INTEGER,
                 total_tokens INTEGER,
                 current_city TEXT)
@@ -59,9 +60,9 @@ def execute_selection_query(sql_query, data=None,
         return None
 
 
-def add_new_user(user_id):  # добавляет нового пользователя, приниает в качестве аргумента id пользователя
-    sql_query = f'INSERT INTO {DB_TABLE_NAME} (user_id, total_tokens, current_city) VALUES (?, ?, ?)'
-    execute_query(sql_query, (user_id, 0, None))
+def add_new_user(user_id, username):  # добавляет нового пользователя, приниает в качестве аргумента id пользователя
+    sql_query = f'INSERT INTO {DB_TABLE_NAME} (user_id, username, total_tokens, current_city) VALUES (?, ?, ?, ?)'
+    execute_query(sql_query, (user_id, username, 0, None))
 
 
 def update_tokens(user_id,
