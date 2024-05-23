@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/bot_helper_in_journey.iml" filepath="$PROJECT_DIR$/.idea/bot_helper_in_journey.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../Proekts/Fourth_module/Leo_16g_tts/.idea/tg_voise.iml" filepath="$PROJECT_DIR$/../../Proekts/Fourth_module/Leo_16g_tts/.idea/tg_voise.iml" />
     </modules>
   </component>
 </project>

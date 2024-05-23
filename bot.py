@@ -1,11 +1,11 @@
 import telebot
-from telebot.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, ReplyKeyboardMarkup, \
+from telebot.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, \
     KeyboardButton
 import logging
 from config import LOGS_PATH, BOT_TOKEN, MAX_USER_TOKENS
 from database import create_database, add_new_user, update_tokens, change_city, is_user, is_limit_users, get_tokens, \
     get_city
-from gpt import ask_gpt, count_gpt_tokens
+from gpt import ask_gpt
 
 logging.basicConfig(
     level=logging.INFO,
@@ -34,8 +34,9 @@ def send_welcome(message):
 
 @bot.callback_query_handler(func=lambda call: True)
 def query_callback1(call):
+    user_id = call.message.chat.id
     if call.data:
-        msg = bot.send_message(call.message.chat.id,
+        msg = bot.send_message(user_id,
                                text="Отлично! Я бот, который помогает в путешествиях. Смогу подобрать куда сходить, рассказать про"
                                     "выбранную тобой достопримечательность. \n"
                                     "А теперь напиши город в котором ты сейчас находишься:")
@@ -67,25 +68,22 @@ def send_about_city(message: Message):
 
     else:
         logging.error(f'{message.from_user.username} c id {message.from_user.id} не смог получить ответ от нейросети')
+    bot.send_message(message.from_user.id,
+                     gpt_text)  # todo эта фигня почему то не дает работать последующим строчкам кода, я буду очень признателен если кто-то поможет узнать почему.
 
-    bot.send_message(message.from_user.id, gpt_text)
-    send_categories(message)
-
-
-def send_categories(message: Message):
-    keyboard = ReplyKeyboardMarkup(row_width=2)
+    keyboard = ReplyKeyboardMarkup(row_width=2, one_time_keyboard=True)
     button1 = KeyboardButton('Повеселиться')
     button2 = KeyboardButton('Посмотреть достопримечательности')
     button3 = KeyboardButton('Перекусить')
-    button4 = KeyboardButton('Поспать')
+    button4 = KeyboardButton('Отдохнуть')
     keyboard.add(button1, button2, button3, button4)
     bot.send_message(message.from_user.id, text=f"Выбери, что хочешь сделать в городе {message.text}",
                      reply_markup=keyboard)
-    bot.register_next_step_handler(message=message, callback=categories_answer)
+    bot.register_next_step_handler(message, categories_answer)
 
 
 def categories_answer(message: Message):
-    if get_tokens(message.from_user.id > MAX_USER_TOKENS):
+    if get_tokens(message.from_user.id) > MAX_USER_TOKENS:
         bot.send_message(message.from_user.id, "Увы, но у тебя закончились токены на ответ.")
         return
     gpt_bool, gpt_text, gpt_tokens = ask_gpt(
@@ -98,17 +96,90 @@ def categories_answer(message: Message):
     else:
         logging.error(f'{message.from_user.username} c id {message.from_user.id} не смог получить ответ от нейросети')
     bot.send_message(message.from_user.id, gpt_text)
+    bot.send_message(message.from_user.id, "Используй команду /commands чтобы увидеть весь список команд.")
+
+
+@bot.message_handler(commands=['commands'])
+def send_commands(message: Message):
+    bot.send_message(message.from_user.id, text=''
+                                                '/help - помощь в случае путанницы\n'
+                                                '/change_city - если захочешь сменить город\n'
+                                                '/about_city - рассказать про выбранный город\n'
+                                                '/send_where_to_to - куда пойти в разных случаях\n'
+                                                '/logs - присылает логи.')
 
 
 @bot.message_handler(commands=['help'])
 def send_help(message: Message):
-    bot.send_message(message.from_user.id, "текст помощи")
+    bot.send_message(message.from_user.id, "текст помощи")  # todo напишисать текст помощи
     logging.info(f"{message.from_user.username} c id {message.from_user.id} запросил помощь.")
 
 
+@bot.message_handler(commands=['change_city'])
+def ask_user_city(message: Message):
+    user_id = message.from_user.id
+    bot.send_message(user_id, "Напиши новый город:")
+    bot.register_next_step_handler(message, change_city)
+
+
+def user_change_city(message: Message):
+    change_city(user_id=message.from_user.id, new_city=message.text)
+    bot.send_message(message.from_user.id, "Город успешно сохранен.")
+
+
+@bot.message_handler(commands=['about_city'])
+def about_city(message: Message):
+    if get_tokens(message.from_user.id) > MAX_USER_TOKENS:
+        bot.send_message(message.from_user.id, "Увы, но у тебя закончились токены на ответ.")
+        return
+
+    gpt_bool, gpt_text, gpt_tokens = ask_gpt(f"Расскажи подробно про город {get_city(message.from_user.id)}.")
+    if gpt_bool:
+        update_tokens(user_id=message.from_user.id, add_tokens=gpt_tokens)
+        logging.info(
+            f"{message.from_user.username} c id {message.from_user.id} получил ответ. Затраченные токены: {gpt_tokens}")
+
+    else:
+        logging.error(f'{message.from_user.username} c id {message.from_user.id} не смог получить ответ от нейросети')
+
+    bot.send_message(message.from_user.id, gpt_text)
+
+
+@bot.message_handler(commands=['send_where_to_to'])
+def what_user_want(message: Message):
+    city = get_city(message.from_user.id)
+    bot.send_message(message.from_user.id, f"Напиши, что ты хочешь сделать в городе {city}:")
+    bot.register_next_step_handler(message, tell_where_to_go, city)
+
+
+def tell_where_to_go(message: Message, city):
+    if get_tokens(message.from_user.id) > MAX_USER_TOKENS:
+        bot.send_message(message.from_user.id, "Увы, но у тебя закончились токены на ответ.")
+        return
+
+    gpt_bool, gpt_text, gpt_tokens = ask_gpt(
+        f'Напиши где можно {message.text} в городе {city}')
+    if gpt_bool:
+        update_tokens(user_id=message.from_user.id, add_tokens=gpt_tokens)
+        logging.info(
+            f"{message.from_user.username} c id {message.from_user.id} получил ответ {gpt_text}. Затраченные токены: {gpt_tokens}")
+
+    else:
+        logging.error(f'{message.from_user.username} c id {message.from_user.id} не смог получить ответ от нейросети')
+    bot.send_message(message.from_user.id, gpt_text)
+
+
+@bot.message_handler(commands=['logs'])
+def send_logs(message: Message):
+    logging.info(f'{message.from_user.username} с ID {message.from_user.id} запросил логи')
+    with open(LOGS_PATH, "r") as logs:
+        bot.send_document(message.from_user.id, logs)
+
+
 @bot.message_handler()
-def others_message(message):
-    bot.send_message(message.from_user.id, "Отправь мне голосовое или текстовое сообщение, и я тебе отвечу")
+def else_message(message: Message):
+    bot.reply_to(message=message,
+                 text="Извините, но я вас не распонял. Удостоверьтесь, что вы следовали инструкции. Чтобы ее просмотреть - пропишите /help.")
 
 
 if __name__ == "__main__":
