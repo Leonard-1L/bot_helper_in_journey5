@@ -2,7 +2,8 @@ import configparser
 
 config = configparser.ConfigParser()
 
-BOT_TOKEN = "6214808173:AAHmqWl1LL-9ytJ7T5MY9mTnfkvRADIOpv0"
+# BOT_TOKEN = "6214808173:AAHmqWl1LL-9ytJ7T5MY9mTnfkvRADIOpv0"
+BOT_TOKEN = "7032292704:AAFChMlXgB41IlKs8CSOJxYBcB2C2buacpM"
 
 LOGS_PATH = f'logs.txt'
 IAM_TOKEN_PATH = f'creds/iam_token.json'  # файл для хранения iam_token
@@ -27,6 +28,4 @@ config['LIMITS'] = {
     'MAX_ANSWER_GPT_TOKENS': '64'
 }
 
-SYSTEM_PROMPT = {'role': 'system', 'text': 'Ты веселый помощник по путешествиям.\n'
-                                           'Отвечай интересно.\n'
-                                           'Поддерживай диалог.'}
+SYSTEM_PROMPT = {'role': 'system', 'text': 'Ты бот помощник в путешествиях. Пиши лаконично.'}
