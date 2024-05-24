@@ -112,9 +112,10 @@ def is_user(user_id):  # возвращает 1, если пользовател
 
 # create_database()
 # add_new_user(2)
-# update_tokens(1, 69)
+# update_tokens(1975608245, 69)
 # print(get_tokens(1))
 # change_city(1, 'Казань')
 # print(get_city(2))
 # print(is_user(1))
 # print(is_limit_users())
+# delete_user(1975608245)

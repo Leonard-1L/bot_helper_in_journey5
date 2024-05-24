@@ -48,14 +48,13 @@ def query_callback1(call):
 def user_add(message: Message):
     if is_user(message.from_user.id) == 0:
         add_new_user(message.from_user.id, message.from_user.first_name)
-        change_city(user_id=message.from_user.id, new_city=message.text)
         logging.info(
             f"{message.from_user.username} c id {message.from_user.id} из города {message.text} теперь с нами!")
     send_about_city(message)
 
 
 def send_about_city(message: Message):
-    change_city(message.from_user.id, message.text)
+    change_city(user_id=message.from_user.id, new_city=message.text)
     if get_tokens(message.from_user.id) > MAX_USER_TOKENS:
         bot.send_message(message.from_user.id, "Увы, но у тебя закончились токены на ответ.")
         return
@@ -86,6 +85,7 @@ def categories_answer(message: Message):
     if get_tokens(message.from_user.id) > MAX_USER_TOKENS:
         bot.send_message(message.from_user.id, "Увы, но у тебя закончились токены на ответ.")
         return
+
     gpt_bool, gpt_text, gpt_tokens = ask_gpt(
         f'Расскажи, где можно погулять в городе {get_city(message.from_user.id)} чтобы {message.text}')
     if gpt_bool:
