@@ -225,3 +225,17 @@ telebot.apihelper.ApiTelegramException: A request to the Telegram API was unsucc
 * **«Теремок»** — популярная сеть блинных. Затраченные токены: 79
 2024-05-24 20:19:44,498 - root - ERROR - Ошибка: database is locked
 2024-05-24 20:26:29,981 - root - ERROR - Ошибка: database is locked
+2024-05-24 20:35:32,938 - root - INFO - Бот запущен
+2024-05-24 20:36:06,159 - root - ERROR - Ошибка: database is locked
+2024-05-24 20:36:08,772 - root - INFO - GPT: request sent!
+2024-05-24 20:36:14,583 - root - ERROR - Ошибка: database is locked
+2024-05-24 20:36:14,583 - root - INFO - niyazkhakeem c id 1975608245 получил ответ. Затраченные токены: 79
+2024-05-24 20:36:18,200 - root - INFO - GPT: request sent!
+2024-05-24 20:36:24,006 - root - ERROR - Ошибка: database is locked
+2024-05-24 20:36:24,006 - root - INFO - niyazkhakeem c id 1975608245 получил ответ Вот некоторые маршруты прогулок по Санкт-Петербургу с основными достопримечательностями, которые стоит посетить гостям города:
+
+1. Пройдитесь по историческому центру города, начиная с Сенатской площади и заканчивая Исаакиевским собором. По пути вы увидите множество архитектурных шедевров, таких как Медный всадник. Затраченные токены: 79
+2024-05-24 20:37:06,071 - root - ERROR - Ошибка: database is locked
+2024-05-24 20:37:53,823 - root - ERROR - Ошибка: database is locked
+2024-05-24 20:40:25,902 - root - ERROR - Ошибка: database is locked
+2024-05-24 20:41:08,614 - root - ERROR - Ошибка: database is locked

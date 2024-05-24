@@ -111,7 +111,7 @@ def is_user(user_id):  # возвращает 1, если пользовател
     return execute_selection_query(sql)[0][0]
 
 # create_database()
-# add_new_user(2)
+# add_new_user(2, 'q')
 # update_tokens(1975608245, 69)
 # print(get_tokens(1))
 # change_city(1, 'Казань')
