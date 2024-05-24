@@ -119,12 +119,13 @@ def send_help(message: Message):
 def ask_user_city(message: Message):
     user_id = message.from_user.id
     bot.send_message(user_id, "Напиши новый город:")
-    bot.register_next_step_handler(message, change_city)
+    bot.register_next_step_handler(message, user_change_city)
 
 
 def user_change_city(message: Message):
     change_city(user_id=message.from_user.id, new_city=message.text)
     bot.send_message(message.from_user.id, "Город успешно сохранен.")
+    logging.info(f"{message.from_user.username} c id {message.from_user.id} сменил город на {message.text}")
 
 
 @bot.message_handler(commands=['about_city'])

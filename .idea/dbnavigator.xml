@@ -16,26 +16,32 @@
     <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="811e215d-b741-40c8-8c34-23854e0c49bc">
-      <console name="Connection" type="STANDARD" schema="" session="Main" />
+    <connection id="6c0627a4-5a68-4006-a57c-1c3d512b0cfd">
+      <console name="Connection 1" type="STANDARD" schema="" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files>
-      <object connection-id="811e215d-b741-40c8-8c34-23854e0c49bc" object-ref="schemas/main/tables/users" />
-    </open-files>
+    <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
-    <connection id="811e215d-b741-40c8-8c34-23854e0c49bc" />
+    <connection id="6c0627a4-5a68-4006-a57c-1c3d512b0cfd" />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
-    <filter-actions connection-id="811e215d-b741-40c8-8c34-23854e0c49bc" dataset="main.users" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="6c0627a4-5a68-4006-a57c-1c3d512b0cfd" dataset="main.users" active-filter-id="EMPTY_FILTER" />
   </component>
   <component name="DBNavigator.Project.ExecutionManager">
     <retain-sticky-names value="false" />
+  </component>
+  <component name="DBNavigator.Project.MethodExecutionManager">
+    <method-browser />
+    <execution-history>
+      <group-entries value="true" />
+      <execution-inputs />
+    </execution-history>
+    <argument-values-cache />
   </component>
   <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />
@@ -43,9 +49,9 @@
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="811e215d-b741-40c8-8c34-23854e0c49bc" active="true" signed="true">
+      <connection id="6c0627a4-5a68-4006-a57c-1c3d512b0cfd" active="true" signed="true">
         <database>
-          <name value="Connection" />
+          <name value="Connection 1" />
           <description value="" />
           <database-type value="SQLITE" />
           <config-type value="BASIC" />
@@ -60,7 +66,7 @@
           <tns-folder value="" />
           <tns-profile value="" />
           <files>
-            <file path="C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\database.db" schema="main" />
+            <file path="C:\My_programms\JetBrains\PyCharm Community Edition 2023.3.2\Тарочкин Леонид\Bots\bot_helper_in_journey\db.db" schema="main" />
           </files>
           <type value="NONE" />
           <user value="" />

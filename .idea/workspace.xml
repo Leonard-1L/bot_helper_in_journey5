@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0773c94a-c6fb-4ac0-9d19-59b1d7b5935b" name="Changes" comment="видоизменил и продолжил разработку bot.py">
+    <list default="true" id="0773c94a-c6fb-4ac0-9d19-59b1d7b5935b" name="Changes" comment="дописал минимум версию bot.py. Осталось разобраться почему в функции send_about_city стопорится код.">
       <change beforePath="$PROJECT_DIR$/.idea/bot_helper_in_journey.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/bot_helper_in_journey.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
@@ -12,14 +12,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gpt.py" beforeDir="false" afterPath="$PROJECT_DIR$/gpt.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.db" beforeDir="false" afterPath="$PROJECT_DIR$/db.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs.txt" beforeDir="false" afterPath="$PROJECT_DIR$/logs.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Proekts/Fourth_module/Leo_16g_tts/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Proekts/Fourth_module/Leo_16g_tts/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Proekts/Fourth_module/Leo_16g_tts/.idea/tg_voise.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Proekts/Fourth_module/Leo_16g_tts/.idea/tg_voise.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Proekts/Fourth_module/Leo_16g_tts/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Proekts/Fourth_module/Leo_16g_tts/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Proekts/Fourth_module/Leo_16g_tts/bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Proekts/Fourth_module/Leo_16g_tts/bot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Proekts/Fourth_module/Leo_16g_tts/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Proekts/Fourth_module/Leo_16g_tts/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Proekts/Fourth_module/Leo_16g_tts/gpt.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Proekts/Fourth_module/Leo_16g_tts/gpt.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +30,20 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="SYNC" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Leonard-1L"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="dff5f2ef-9066-4260-866f-b8dfbf4476ef" />
+        <option name="url" value="https://github.com/Leonard-1L/bot_helper_in_journey5.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -55,6 +63,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Python.bot.executor": "Run",
+    "Python.config.executor": "Run",
     "Python.gpt.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -124,7 +133,23 @@
       <option name="project" value="LOCAL" />
       <updated>1716489000927</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="дописал минимум версию bot.py. Осталось разобраться почему в функции send_about_city стопорится код.">
+      <option name="closed" value="true" />
+      <created>1716496878597</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1716496878597</updated>
+    </task>
+    <task id="LOCAL-00007" summary="дописал минимум версию bot.py. Осталось разобраться почему в функции send_about_city стопорится код.">
+      <option name="closed" value="true" />
+      <created>1716496920777</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1716496920777</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -143,6 +168,7 @@
     <MESSAGE value="cheking commit" />
     <MESSAGE value="реализовал добавление пользователей в бд, организовал начало. чуть чуть в database.py улучшил читабельность кода" />
     <MESSAGE value="видоизменил и продолжил разработку bot.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="видоизменил и продолжил разработку bot.py" />
+    <MESSAGE value="дописал минимум версию bot.py. Осталось разобраться почему в функции send_about_city стопорится код." />
+    <option name="LAST_COMMIT_MESSAGE" value="дописал минимум версию bot.py. Осталось разобраться почему в функции send_about_city стопорится код." />
   </component>
 </project>
