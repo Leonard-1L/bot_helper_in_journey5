@@ -27,7 +27,7 @@ def send_welcome(message):
     itembtn1 = InlineKeyboardButton(text="Начинаем!", callback_data='russ')
     markup.add(itembtn1)
     bot.send_message(message.chat.id,
-                     f"Привет, {message.from_user.first_name}! Я бот такой-то..."  # todo дописать вступление
+                     f"Привет, {message.from_user.first_name}! Я бот-помощник в путешествиях"
                      f"\nНачинаем?",
                      reply_markup=markup)
 
@@ -111,7 +111,9 @@ def send_commands(message: Message):
 
 @bot.message_handler(commands=['help'])
 def send_help(message: Message):
-    bot.send_message(message.from_user.id, "текст помощи")  # todo напишисать текст помощи
+    bot.send_message(message.from_user.id, "Бот выдаёт информацию о твоём текущем городе\n"
+                                           "Подробности можно запросить с помощью кнопок или команд, "
+                                           "список которых можно посмотреть по команде /commands")
     logging.info(f"{message.from_user.username} c id {message.from_user.id} запросил помощь.")
 
 
