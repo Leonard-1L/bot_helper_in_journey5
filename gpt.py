@@ -9,9 +9,8 @@ logging.basicConfig(
     filemode="a"
 )
 
-# iam_token, folder_id =
-iam_token = 't1.9euelZqNjJvOzInGnZXNks2KkZzPm-3rnpWampPNisrKl5qQysqPj86Uj83l8_cAUzxN-e8rRH5I_N3z90ABOk357ytEfkj8zef1656VmpzLys_OjJeYnc_Mi8nNnJPI7_zF656VmpzLys_OjJeYnc_Mi8nNnJPIveuelZqcz5OZjMmPncrKmc2YysnLlLXehpzRnJCSj4qLmtGLmdKckJKPioua0pKai56bnoue0oye.PFPYHCbsZ-2jmJ6zZS_k3IZQZ-WBqvzEAcWhpt0IR1ksXmdY2bA718wSre3q40jvqOfMwhbp_jXptZpvn3bgAg'
-folder_id = 'b1gnl6btbg8ba5ub4odq'
+iam_token = ""  # t1.9euelZqXjJK...
+folder_id = ""  # b1gpk...
 
 
 def count_gpt_tokens(messages):
@@ -48,7 +47,7 @@ def ask_gpt(messages):
             },
             "messages": [SYSTEM_PROMPT, {'role': 'user', 'text': messages}]
         }
-        
+
         response = requests.post(url, headers=headers, json=data)
         print(response.json())
         logging.info('GPT: request sent!')
@@ -62,4 +61,3 @@ def ask_gpt(messages):
     except Exception as e:
         logging.error(e)
         return False, "Ошибка при обращении к GPT", None
-
